@@ -1,0 +1,1 @@
+This application created only for educational purpose.
