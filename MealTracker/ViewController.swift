@@ -14,14 +14,11 @@ class ViewController: UIViewController, UITextFieldDelegate, UIImagePickerContro
     @IBOutlet var nameTextField: UITextField!
     @IBOutlet var mealNameLabel: UILabel!
     @IBOutlet var photoImageView: UIImageView!
+    @IBOutlet var ratingControl: RatingControl!
     
     
     
     //MARK: Actions
-    @IBAction func setDefaultLabelText(_ sender: UIButton) {
-        mealNameLabel.text = "Default text"
-    }
-    
     @IBAction func selectImageFromPhotoLibrary(_ sender: UITapGestureRecognizer) {
         //Hide the keyboard
         nameTextField.resignFirstResponder()
