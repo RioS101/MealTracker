@@ -16,7 +16,11 @@ import UIKit
     private var ratingButtons = [UIButton]()
     
     //By leaving it as internal access (the default), you can access it from any other class inside the app.
-    var rating = 0
+    var rating = 0 {
+        didSet {
+            updateButtonSelectionStates()
+        }
+    }
     
     //You can also specify properties that can then be set in the Attributes inspector. Add the @IBInspectable attribute to the desired properties.
     @IBInspectable var starSize: CGSize = CGSize(width: 44.0, height: 44.0) {
@@ -43,7 +47,16 @@ import UIKit
     
     //MARK: Button Action
     @objc func ratingButtonTapped(button: UIButton) {
-        print("Button pressed 👍🏻")
+        guard let index = ratingButtons.firstIndex(of: button) else {
+           fatalError("The button \(button) is not in the ratingButtons array: \(ratingButtons)")
+        }
+        
+        let selectedRating = index + 1
+        if selectedRating == rating {
+            rating = 0
+        } else {
+            rating = selectedRating
+        }
     }
     
     //MARK: Private Methods
@@ -55,6 +68,7 @@ import UIKit
         }
         ratingButtons.removeAll()
         
+        //load button images
         let bundle = Bundle(for: type(of: self))
         let filledStar = UIImage(named: "filledStar", in: bundle, compatibleWith: self.traitCollection)
         let emptyStar = UIImage(named: "emptyStar", in: bundle, compatibleWith: self.traitCollection)
@@ -84,7 +98,16 @@ import UIKit
             //add the new button to the rating button array
             ratingButtons.append(button)
                 }
+        
+        updateButtonSelectionStates()
             }
+    
+    private func updateButtonSelectionStates() {
+        for (index, button) in ratingButtons.enumerated() {
+            // If the index of a button is less than the rating, that button should be selected.
+            button.isSelected = index < rating
+        }
+    }
 
         }
         
