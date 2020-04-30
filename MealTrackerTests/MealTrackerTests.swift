@@ -9,10 +9,13 @@
 import XCTest
 @testable import MealTracker
 //Note that the code uses the @testable attribute to give your tests access to the internal elements of your app’s code.
+//test case
 class MealTrackerTests: XCTestCase {
     //MARK: Meal Class Tests
     // Confirm that the Meal initializer returns a Meal object when passed valid parameters.
+    //test method
     func testMealInitializationShouldSucceed() {
+        //test
         //zero rating
         let zeroRatingMeal = Meal.init(name: "Zero", photo: nil, rating: 0)
         XCTAssertNotNil(zeroRatingMeal)
