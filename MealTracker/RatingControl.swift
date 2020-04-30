@@ -22,7 +22,7 @@ import UIKit
         }
     }
     
-    //You can also specify properties that can then be set in the Attributes inspector. Add the @IBInspectable attribute to the desired properties.
+    //You can also specify properties that can then be set in the Attributes inspector. Add the @IBInspectable attribute
     @IBInspectable var starSize: CGSize = CGSize(width: 44.0, height: 44.0) {
         didSet {
             setupButtons()
