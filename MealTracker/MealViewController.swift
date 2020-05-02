@@ -7,6 +7,8 @@
 //
 
 import UIKit
+//This imports the unified logging system.
+import os.log
 
 class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -14,8 +16,28 @@ class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
     @IBOutlet var nameTextField: UITextField!
     @IBOutlet var photoImageView: UIImageView!
     @IBOutlet var ratingControl: RatingControl!
+    @IBOutlet var saveButton: UIBarButtonItem!
     
+    /*
+    This value is either passed by `MealTableViewController` in `prepare(for:sender:)`
+    or constructed as part of adding a new meal.
+    */
+    var meal: Meal?
     
+    //MARK: Navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        //можно было бы проверять из какой кнопки запущен переход просто через segue.identifier созданный еще при перетягивании на Exit от кнопки
+        guard let button = sender as? UIBarButtonItem, button === saveButton  else {
+            os_log("The save button was not pressed, cancelling", log: OSLog.default, type: .debug)
+            return
+        }
+        let name = nameTextField.text ?? ""
+        let photo = photoImageView.image
+        let rating = ratingControl.rating
+        // Set the meal to be passed to MealTableViewController after the unwind segue.
+        meal = Meal(name: name, photo: photo, rating: rating)
+    }
     
     //MARK: Actions
     @IBAction func selectImageFromPhotoLibrary(_ sender: UITapGestureRecognizer) {

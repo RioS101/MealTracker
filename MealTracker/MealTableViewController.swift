@@ -96,6 +96,16 @@ class MealTableViewController: UITableViewController {
     }
     */
     
+    //MARK: Actions
+    @IBAction func unwindToMealList(_ unwindSegue: UIStoryboardSegue) {
+        if let sourceViewController = unwindSegue.source as? MealViewController, let meal = sourceViewController.meal {
+            let newIndexPath = IndexPath(row: meals.count, section: 0)
+            meals.append(meal)
+            tableView.insertRows(at: [newIndexPath], with: .automatic)
+        }
+        // Use data from the view controller which initiated the unwind segue
+    }
+    
     //MARK: Private Methods
     private func loadSampleMeals() {
         let photo1 = UIImage(named: "meal1")
@@ -113,7 +123,8 @@ class MealTableViewController: UITableViewController {
         }
         
         meals += [meal1, meal2, meal3]
-        
     }
+    
+    
 
 }
