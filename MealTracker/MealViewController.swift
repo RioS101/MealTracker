@@ -25,7 +25,8 @@ class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
     var meal: Meal?
     
     //MARK: Navigation
-    //здесь можно было бы создать соединение с unwindSegue и с помощью segue.identifier просто перейти в mealTableViewController через unwindSegue при этои ничего не делая в нем для этого
+    //здесь можно было бы создать соединение с unwindSegue и просто перейти в mealTableViewController через unwindSegue при этои ничего не делая в нем для этого
+    //метод которым мы воспользовались не сработает если между двумя scene есть еще как минимум одна т.к. dimiss просто скрывает scene, а unwind убирает все scene из navigation stack до того scene, к которому этот unwind и возвращается
     @IBAction func cancel(_ sender: UIBarButtonItem) {
         dismiss(animated: true, completion: nil)
     }
