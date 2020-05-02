@@ -25,6 +25,12 @@ class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
     var meal: Meal?
     
     //MARK: Navigation
+    //здесь можно было бы создать соединение с unwindSegue и с помощью segue.identifier просто перейти в mealTableViewController через unwindSegue при этои ничего не делая в нем для этого
+    @IBAction func cancel(_ sender: UIBarButtonItem) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
         //можно было бы проверять из какой кнопки запущен переход просто через segue.identifier созданный еще при перетягивании на Exit от кнопки
@@ -80,15 +86,17 @@ class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
         return true
     }
     
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+            // Disable the Save button while editing.
+        saveButton.isEnabled = false
+    }
+    
     func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
         updateSaveButtonState()
         navigationItem.title = textField.text
     }
     
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-            // Disable the Save button while editing.
-        saveButton.isEnabled = false
-    }
+    
     
     //MARK: UIIMagePickerControllerDelegate
     
