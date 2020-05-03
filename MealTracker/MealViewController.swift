@@ -28,7 +28,22 @@ class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
     //здесь можно было бы создать соединение с unwindSegue и просто перейти в mealTableViewController через unwindSegue при этои ничего не делая в нем для этого
     //метод которым мы воспользовались не сработает если между двумя scene есть еще как минимум одна т.к. dimiss просто скрывает scene, а unwind убирает все scene из navigation stack до того scene, к которому этот unwind и возвращается
     @IBAction func cancel(_ sender: UIBarButtonItem) {
-        dismiss(animated: true, completion: nil)
+        // Depending on style of presentation (modal or push presentation), this view controller needs to be dismissed in two different ways.
+        //This code creates a Boolean value that indicates whether the view controller that presented this scene is of type UINavigationController.
+        let isPresentingInAddMealMode = presentingViewController is UINavigationController
+        
+        if isPresentingInAddMealMode {
+            dismiss(animated: true, completion: nil)
+        } else if let owningNavigationController = navigationController {
+            //This method removes the top view controller from the stack and makes the new top of the stack the active view controller.
+            //это первый Navigation controller, второй он обходит
+            owningNavigationController.popViewController(animated: true)
+        }
+        //If your app’s navigation flow is set up properly, this else case should never execute. If it does, it indicates a bug in your app. The else case prints an error message to the console and terminates the app.
+        else {
+            fatalError("The MealViewController is not inside a navigation controller.")
+        }
+        
     }
     
     
