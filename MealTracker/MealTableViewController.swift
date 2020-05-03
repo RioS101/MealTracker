@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import os.log
 
 class MealTableViewController: UITableViewController {
     //MARK: Properties
@@ -86,24 +87,49 @@ class MealTableViewController: UITableViewController {
     }
     */
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        super.prepare(for: segue, sender: sender)
+        
+        switch (segue.identifier ?? "") {
+        case "AddItem":
+            os_log("Adding a new meal", log: OSLog.default, type: .debug)
+        case "ShowDetail":
+            guard let mealDetailViewController = segue.destination as? MealViewController else {
+                fatalError("Unexpected destination \(segue.destination)")
+            }
+            //sender is the object that triggered the action. In this case triggered the segue.
+            guard let selectedCell = sender as? MealTableViewCell else { fatalError("Unexpected sender")
+            }
+            guard let indexPath = tableView.indexPath(for: selectedCell) else {
+                    fatalError("The selected cell is not being displayed by the table")
+            }
+                let selectedMeal = meals[indexPath.row]
+                mealDetailViewController.meal = selectedMeal
+            default:
+                fatalError("Unexpected Segue Identifier")
+        }
+        
     }
-    */
+    
     
     //MARK: Actions
     @IBAction func unwindToMealList(_ unwindSegue: UIStoryboardSegue) {
         if let sourceViewController = unwindSegue.source as? MealViewController, let meal = sourceViewController.meal {
-            let newIndexPath = IndexPath(row: meals.count, section: 0)
-            meals.append(meal)
-            tableView.insertRows(at: [newIndexPath], with: .automatic)
+            //This code checks whether a row in the table view is selected. If it is, that means a user tapped one of the table views cells to edit a meal. In other words, this if statement gets executed when you are editing an existing meal.
+            if let selectedIndexPath = tableView.indexPathForSelectedRow {
+                // Update an existing meal.
+                meals[selectedIndexPath.row] = meal
+                tableView.reloadRows(at: [selectedIndexPath], with: .none)
+            } else {
+                let newIndexPath = IndexPath(row: meals.count, section: 0)
+                meals.append(meal)
+                tableView.insertRows(at: [newIndexPath], with: .automatic)
+            }
         }
-        // Use data from the view controller which initiated the unwind segue
     }
     
     //MARK: Private Methods
