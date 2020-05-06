@@ -12,10 +12,9 @@ import UIKit
 
 @IBDesignable class RatingControl: UIStackView {
     //MARK: Properties
-    //You don’t want to let anything outside the RatingControl class access these buttons; therefore, you declare them as private.
+    //You don’t want to let anything outside the RatingControl class access these buttons; therefore, you declare them as private. Otherwise you can access it from any other class inside the app.
     private var ratingButtons = [UIButton]()
     
-    //By leaving it as internal access (the default), you can access it from any other class inside the app.
     var rating = 0 {
         didSet {
             updateButtonSelectionStates()
@@ -107,7 +106,7 @@ import UIKit
     
     private func updateButtonSelectionStates() {
         for (index, button) in ratingButtons.enumerated() {
-            // If the index of a button is less than the rating, that button should be selected.
+            // If the index of a button is less than the rating, that button should be selected. For example we rated for 3 stars -> rating = 3. It means that buttons with index 0,1,2 must be selected for indicating that rating is 3
             button.isSelected = index < rating
             
             // Set the hint string for the currently selected star
