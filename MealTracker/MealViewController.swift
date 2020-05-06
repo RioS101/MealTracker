@@ -95,7 +95,7 @@ class MealViewController: UIViewController, UITextFieldDelegate, UIImagePickerCo
         if let meal = meal {
             navigationItem.title = meal.name
             nameTextField.text = meal.name
-            photoImageView.image = meal.photo
+            photoImageView.image = meal.photo?.getImage()
             ratingControl.rating = meal.rating
         }
     }

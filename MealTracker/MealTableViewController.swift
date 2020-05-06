@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import os.log
+import os.log  /*Ios logging system*/
 
 class MealTableViewController: UITableViewController {
     //MARK: Properties
@@ -15,7 +15,12 @@ class MealTableViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadSampleMeals()
+        //if there any saved information load it, otherwise load sample data
+        if let savedData = Meal.loadMeals() {
+            meals = savedData
+        } else {
+            loadSampleMeals()
+        }
 
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
@@ -46,7 +51,7 @@ class MealTableViewController: UITableViewController {
 
         // Configure the cell...
         cell.nameLabel.text = meal.name
-        cell.photoImageView.image = meal.photo
+        cell.photoImageView.image = meal.photo?.getImage()
         cell.ratingControl.rating = meal.rating
 
         return cell
@@ -68,6 +73,7 @@ class MealTableViewController: UITableViewController {
             // Delete the row from the data source
             meals.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
+            Meal.saveMeals(meals)
         } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
         }    
@@ -131,10 +137,12 @@ class MealTableViewController: UITableViewController {
                 meals.append(meal)
                 tableView.insertRows(at: [newIndexPath], with: .automatic)
             }
+            Meal.saveMeals(meals)
         }
     }
     
     //MARK: Private Methods
+    //we can move this code to the Meal class as its static method
     private func loadSampleMeals() {
         let photo1 = UIImage(named: "meal1")
         let photo2 = UIImage(named: "meal2")
